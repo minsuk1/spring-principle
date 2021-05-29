@@ -1,0 +1,19 @@
+
+[SRP] - 클래스는 단 하나 책임
+
+구현 객체를 생성하고 연결하는 책임은 AppConfig 담당
+클라이언트 객체(service)에서는 객체 실행 책임만 담당
+
+
+[DIP] - 추상화에 의존
+
+OrderServiceImple은 FixDiscountPolicy(인터페이스 구현객체)와 DiscountPolicy(인터페이스) 모두 의존
+but, 인터페이스에만 의존.
+AppConfig에서 OrderServiceImple 대신 의존관계 주입.
+
+
+[OCP] - 확장에 열려있으나, 변경에 닫혀 있어야
+
+OrderServiceImple이 Fix가 아닌 Rate로 바꾸더라도 AppConfig에서 의존관계를 설정하기 때문에
+클라이언트쪽에서 코드를 변경할 필요가 없다.
+
