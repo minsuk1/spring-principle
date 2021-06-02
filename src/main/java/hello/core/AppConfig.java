@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 // 스프링 컨테이너는 @Configuration 이 붙은 AppConfig 를 설정(구성) 정보로 사용
 // 싱글톤을 보장
+// 클래스가 스프링 빈 설정 클래스임을 의미
 @Configuration
 public class AppConfig {
 
