@@ -1,0 +1,72 @@
+[웹어플리케이션]
+EntityManager Factory가 고객 요청 올 때 마다 각 EntityManager 생성.
+EntityManager은 DB와 커넥션풀통해 DB 사용
+
+EntityManager 통해 영속성 컨텍스트 접근
+영속성 컨텍스트(논리적 개념): Entity를 영구 저장하는 환경
+
+--------------------------------------------------------------
+
+Entity 생명주기
+
+1. 비영속 new
+Member member = new Member();
+member.setId("1L")
+
+2. 영속 managed
+영속성 컨텍스트에 관리되는 상태
+Member member = new Member();
+member.setId("1L")
+// 영속상태 - 여기에서 db 저장이 아니라, transaction commit 시점에서 query날라감
+em.persist(member);
+
+3. 준영속 detached
+영속성 컨텍스트에 저장되었다가 분리되는 상태
+em.detach(member);
+
+4. 삭제 removed
+em.remove(member);
+
+--------------------------------------------------------------
+
+어플리케이션과 DB 사이에 계층
+
+장점
+
+1. 1차 캐시
+영속컨텍스트(EntityManager)
+@Id(DB PK)  Entity
+"member1"   member
+
+Member findMember = em.find(Member.class, "member1")
+db에서 찾는게 아니라 1차 캐시에서 값 찾는다
+
+
+2. 동일성(identity) 보장(같은 transaction 안에서) - 1차 캐시 덕분에 가능
+Collection에서 가져와서 같은 레퍼런스를 같는 객체를 비교하는 것
+Member a = em.find(Member.class, "101L");
+Member b = em.find(Member.class, "101L");
+a==b? True
+
+
+3. 트랜잭션 지원하는 쓰기 지연
+em.persist순간 1차 캐시에 저장 + 쓰기 지연 SQL 저장소에 insert 쿼리 둠
+commit하는 순간 flush 하면서 쿼리 한번에 보냄
+transaction.begin();
+
+em.persist(memberA);
+em.persist(memberB);
+
+transaction.commit();
+
+
+4. 변경감지 dirty checking - 마치 컬렉션에서 값 빼서 수정하고 다시 저장 X
+EntityManager안에 있는 스냅샷과 비교해서 차이는 쓰기 지연 SQL 저장소에 update 쿼리 둠
+Member a = em.find(Member.class, "101L");
+a.setName("aaa")
+
+5. lazy loading
+
+--------------------------------------------------------------
+
+Flush
