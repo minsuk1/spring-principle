@@ -22,7 +22,9 @@ em.persist(member);
 
 3. 준영속 detached
 영속성 컨텍스트에 저장되었다가 분리되는 상태
-em.detach(member);
+em.detach(member); 특정 Entity만 준영속 상태
+em.clear(); 영속성 컨텍스트 완전 초기화
+em.close() 영속성 컨텍스트 종료
 
 4. 삭제 removed
 em.remove(member);
@@ -70,3 +72,9 @@ a.setName("aaa")
 --------------------------------------------------------------
 
 Flush
+영속성 컨텍스트의 변경내용을 DB에 반영
+영속성 컨텍스트비우는 게아니라 변경내용을 DB에 등록
+
+em.flush()
+트랜잭션 commit
+JPQL 쿼리 실행
