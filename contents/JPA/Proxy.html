@@ -1,0 +1,27 @@
+[프록시]
+- 실제 클래스를 상속 받아서 만들어짐
+- 사용하는 입장에서는 진짜 객체인지 프록시 객체인지 구분하지 않음
+- 프록시 객체는 실제 객체의 참조(target)를 보관
+- client는 getName()호출하면 Proxy에서 영속성 컨텍스트 통해 초기화 요청하고
+  target에 실제 entity Member넣음. target.getName()호출
+
+
+- 프록시 객체는 처음 사용할 때 한 번만 초기화
+- 프록시 객체를 초기화 할 때, 프록시 객체가 실제 엔티티로 바뀌는 것은 아님,
+  초기화되면 프록시 객체를 통해서 실제 엔티티에 접근 가능
+
+
+[지연 로딩]
+member ---> (지연로딩) team(프록시)
+Team team = member.getTeam()
+team.getName(); // 실제 team을 사용하는 시점에 초기화(DB 조회)
+
+[즉시 로딩]
+JPQL에서 N+1 문제
+select * from member 했는데 member 쿼리 날리고 그 다음에 team 조인하기 때문에
+
+[CASCADE]
+persist, remove 등
+두 개의 entity만 종속적일 때만 사용
+team member는 ok 하지만
+team member 다른 entity  이러면 다른 entity에도 영향 미쳐서 X
