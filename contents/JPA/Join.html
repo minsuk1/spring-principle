@@ -1,0 +1,11 @@
+select m.Team.name from Members m-> 성공
+select t.members from Team -> 성공
+select t.members.username from Team t -> 실패
+select m.username from Team t join t.members m -> 성공
+
+단일 값 연관 경로 ok
+컬렉션 값 연관 경로 ok X
+
+
+단일 값 연관 경로에서 묵시적으로 JOIN 가능하지만 쿼리 튜닝을 위해 명시적 필요.
+N:! 관계 위해서도 명시적으로 join
